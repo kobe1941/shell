@@ -62,3 +62,4 @@ grep ".m" realClassList.txt | grep -v "Tests.m" > classListUsed.txt; #这是双g
 
 sed "s/.m/\n/" classListUsed.txt > finalClassList.txt; #去掉.m，只留下类的名称，原理是把.m字符用回车换行替换掉
 
+

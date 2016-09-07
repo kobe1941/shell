@@ -1,6 +1,0 @@
-mainn
-AppDelegaten
-ViewControllern
-Foon
-Mann
-Sonn
