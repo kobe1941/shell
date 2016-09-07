@@ -53,7 +53,7 @@ function searchAllClassFromProject()
 
 	line_count=`cat PBXBuildFile.txt | wc -l`; #计算文件行数
 
-	echo "line_count=${line_count}";
+	#echo "line_count=${line_count}";
 
 	end_line=$[line_count-1]; #做数字运算
 
@@ -66,15 +66,16 @@ function searchAllClassFromProject()
 	grep "\.m" realClassList.txt | grep -v "Tests.m$" | grep -v "Tests.mm$" | grep -v "Test.m$" | grep -v "Test.mm" | grep -v "+" > classListUsed.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
 
 	fileName=$2;
+	echo "fileName=${fileName}";
 	if [ ! -d $fileName ]; then
-		mkdir $fileName;
+		mkdir -p $fileName; #-p表示多重目录
 	else
 		echo "dir already exsit";
 	fi
 	
-	echo "fileName=${fileName}";
+	#echo "fileName=${fileName}";
 
-	sed "s/\.m\{1,2\}$/ /" classListUsed.txt > $fileName/finalClassList.txt; #去掉.m和.mm，只留下类的名称，原理是把.m字符用空格替换掉
+	sed "s/\.m\{1,2\}$/ /" classListUsed.txt | sort -u > $fileName/finalClassList.txt; #去掉.m和.mm，只留下类的名称，原理是把.m字符用空格替换掉,同时去重
 
 
 }
@@ -90,16 +91,19 @@ function searchAllClassFromProject()
 	fileArray=($(find $filePath -name "*.${fileExtension}"));
 	echo ${fileArray[0]}; #取出数组第一个元素
 
-#for tempName in ${fileArray[*]}; do
+for tempName in ${fileArray[*]}; do
 	#echo "tempName=${tempName}";
-	tempName=${fileArray[4]};
+	#tempName=${fileArray[4]};
 	projectName=$(serahProjectName ${tempName});
 	echo "projectName=${projectName}";
 
-	resultFile=$(searchAllClassFromProject ${tempName} $projectName);
+	fullName="project/${projectName}";
+	#echo "fullName=${fullName}";
+
+	resultFile=$(searchAllClassFromProject ${tempName} ${fullName});
 	echo "resultFile=${resultFile}";
 
-#done
+done
 
 
 #projectName=$(serahProjectName ${fileArray[0]});
