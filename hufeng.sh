@@ -30,8 +30,15 @@ echo "Hello World!";
 # done
 
 filePath=$1; #文件目录
-fileExtension="xcodeproj";
+fileExtension="pbxproj";
 
 #找出指定目录下的所有指定格式的文件
-find $filePath -name "*.${fileExtension}";
+#find $filePath -name "*.${fileExtension}" > fileAllList.txt;
+
+#把搜索结果传递给数组
+fileArray=($(find $filePath -name "*.${fileExtension}"));
+echo ${fileArray[0]}; #取出数组第一个元素
+
+testFile=${fileArray[0]};
+echo $testFile;
 
