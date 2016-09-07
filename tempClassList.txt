@@ -1,0 +1,11 @@
+		4FA4F3561D7401D000E5308D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F3551D7401D000E5308D /* main.m */; };
+		4FA4F3591D7401D000E5308D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F3581D7401D000E5308D /* AppDelegate.m */; };
+		4FA4F35C1D7401D000E5308D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F35B1D7401D000E5308D /* ViewController.m */; };
+		4FA4F35F1D7401D000E5308D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4F35D1D7401D000E5308D /* Main.storyboard */; };
+		4FA4F3611D7401D000E5308D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4F3601D7401D000E5308D /* Assets.xcassets */; };
+		4FA4F3641D7401D000E5308D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4F3621D7401D000E5308D /* LaunchScreen.storyboard */; };
+		4FA4F36F1D7401D000E5308D /* HFBuildTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F36E1D7401D000E5308D /* HFBuildTests.m */; };
+		4FA4F37A1D7401D000E5308D /* HFBuildUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F3791D7401D000E5308D /* HFBuildUITests.m */; };
+		4FA4F38F1D74024800E5308D /* Foo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F3881D74024800E5308D /* Foo.m */; };
+		4FA4F3901D74024800E5308D /* Man.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F38A1D74024800E5308D /* Man.m */; };
+		4FA4F3911D74024800E5308D /* Son.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA4F38C1D74024800E5308D /* Son.m */; };

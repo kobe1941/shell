@@ -42,3 +42,22 @@ echo ${fileArray[0]}; #取出数组第一个元素
 testFile=${fileArray[0]};
 echo $testFile;
 
+sed -n '/.m in Sources /p' $testFile > sourceFile.txt; #找出所有包含指定字符创的行，并存储为文件
+sed -n '/Begin PBXBuildFile section/,/End PBXBuildFile section/p' $testFile > PBXBuildFile.txt; #找出指定的一段文本，并存储为文本
+#sed -n '/Begin PBXBuildFile section/,/End PBXBuildFile section/p' $testFile | grep -Ev '(^Begin)' > tempClassList.txt;
+
+line_count=`cat PBXBuildFile.txt | wc -l`; #计算文件行数
+
+echo $line_count;
+
+end_line=$[line_count-1]; #做数字运算
+
+sed -n "2,$[line_count-1]p" PBXBuildFile.txt > tempClassList.txt; #去掉第一行和最后一行
+
+#sed是行匹配，awk是列匹配，此处为提取第3列的内容
+awk '{print $3}' tempClassList.txt > realClassList.txt; #提取所有的类和其他文件，此时包含storyboard和xib
+
+#grep ".m" realClassList.txt > hufengReal.txt; #提取出所有的.m文件，差不多是相当于所有的类
+grep ".m" realClassList.txt | grep -v "Tests.m" > hufengTest.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
+
+#echo 
