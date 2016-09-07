@@ -60,4 +60,5 @@ awk '{print $3}' tempClassList.txt > realClassList.txt; #提取所有的类和�
 #grep ".m" realClassList.txt > hufengReal.txt; #提取出所有的.m文件，差不多是相当于所有的类
 grep ".m" realClassList.txt | grep -v "Tests.m" > classListUsed.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
 
-#echo 
+sed "s/.m/\n/" classListUsed.txt > finalClassList.txt; #去掉.m，只留下类的名称，原理是把.m字符用回车换行替换掉
+
