@@ -1,8 +1,0 @@
-main.m
-AppDelegate.m
-ViewController.m
-HFBuildTests.m
-HFBuildUITests.m
-Foo.m
-Man.m
-Son.m

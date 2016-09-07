@@ -58,6 +58,6 @@ sed -n "2,$[line_count-1]p" PBXBuildFile.txt > tempClassList.txt; #去掉第一�
 awk '{print $3}' tempClassList.txt > realClassList.txt; #提取所有的类和其他文件，此时包含storyboard和xib
 
 #grep ".m" realClassList.txt > hufengReal.txt; #提取出所有的.m文件，差不多是相当于所有的类
-grep ".m" realClassList.txt | grep -v "Tests.m" > hufengTest.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
+grep ".m" realClassList.txt | grep -v "Tests.m" > classListUsed.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
 
 #echo 
