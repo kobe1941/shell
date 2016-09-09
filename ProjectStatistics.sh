@@ -36,29 +36,56 @@ function serahProjectName()
 	fileArray=($(find $filePath -name "*.${fileExtension}"));
 	echo ${fileArray[0]}; #取出数组第一个元素
 
+	#先删掉该文件
+	if [ -f "finalProjectSizeList.txt" ]; then 
+		 rm finalProjectSizeList.txt
+ 	fi 
+	
+
 for tempName in ${fileArray[*]}; do
+
 	#先获取到工程名
 	projectName=$(serahProjectName ${tempName});
-	echo "projectName=${projectName}";
+	echo "projectName=${projectName} start...";
 
 	#拼接成完整路径
 	fullName="project/${projectName}";
 	#echo "fullName=${fullName}";
-	fileName="${fullName}/finalClassList.txt";
+	finalFileName="${fullName}/finalClassList.txt";
 
+	
+	#先删掉该文件
+	if [ -f "${fullName}/projectSize.txt" ]; then 
+		 rm "${fullName}/projectSize.txt";
+ 	fi 
 
 	# 一行行的读取进行处理
 	cat $finalFileName | while read line
 	do
-    	echo "${line}"
+    	# echo "${line}"
 		#利用空格来做匹配比较合适，-E代表逻辑或,-w表示完全匹配
-		grep -E " ${line}\.o |(${line}\.o) " finalClassSizeList.txt | awk '{print $1, $2, $4}' >> "${fullName}/projectSize.txt";
+		grep -E " ${line}\.o |(${line}\.o)" finalClassSizeList.txt | awk '{print $1, $2, $4}' >> "${fullName}/projectSize.txt";
 	done
+
+	echo "projectName=${projectName} done.";
+
+
+	#排序输出然后保存到文件里
+	awk -v VAR=$projectName '{sum+=$3} END{ 
+		print VAR" = "sum/1024" kb";
+
+	}' "${fullName}/projectSize.txt" >> finalProjectSizeList.txt;
 
 done
 
 
-	# firstFile=${fileArray[4]};
+sed '/Demo/d' finalProjectSizeList.txt > finalProjectSizeListDeleteDemo.txt
+
+sort -n -r -k3	finalProjectSizeListDeleteDemo.txt > finalProjectSizeListSort.txt;
+
+
+
+	# firstFile=${fileArray[1]};
 	# projectName=$(serahProjectName ${firstFile});
 	# echo "projectName=${projectName}";
 	# #拼接成完整路径
@@ -67,16 +94,19 @@ done
 	# finalFileName="${fullName}/finalClassList.txt";
 	# echo "finalFileName=${finalFileName}";
 
-#排序输出然后保存到文件里
-# awk '{sum[$3]+=$2} END{ 
-# 	len=length(sum);
-# 	for (i = 1; i < len; i++){
-# 		print i, " ",sum[i];
 
-# 	}
+	# 一行行的读取进行处理
+	# cat $finalFileName | while read line
+	# do
+    	# echo "${line}"
+	# 	#利用空格来做匹配比较合适，-E代表逻辑或,-w表示完全匹配
+	# 	# grep -E " ${line}\.o |(${line}\.o) " finalClassSizeList.txt | awk '{print $1, $2, $4}' >> "${fullName}/projectSize.txt";
+	# 	grep -E " ${line}\.o |(${line}\.o)" finalClassSizeList.txt | awk '{print $1, $2, $4}' >> "${fullName}/projectSize.txt";
+	# done
 
-# }' SymbolsTempSort.txt > classResultSize.txt;
+	# #排序输出然后保存到文件里
+	# awk -v VAR=$projectName '{sum+=$3} END{ 
+	# 	print VAR" = "sum;
 
-
-
+	# }' "${fullName}/projectSize.txt" >> finalProjectSizeList.txt;
 

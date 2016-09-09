@@ -43,6 +43,8 @@ function searchAllClassFromProject()
 
 	end_line=$[line_count-1]; #做数字运算
 
+
+	# echo "testFile=${testFile}";
 	sed -n "2,$[line_count-1]p" PBXBuildFile.txt > tempClassList.txt; #去掉第一行和最后一行
 
 	#sed是行匹配，awk是列匹配，此处为提取第3列的内容
@@ -52,7 +54,7 @@ function searchAllClassFromProject()
 	grep "\.m" realClassList.txt | grep -v "Tests.m$" | grep -v "Tests.mm$" | grep -v "Test.m$" | grep -v "Test.mm" | grep -v "+" > classListUsed.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
 
 	fileName=$2;
-	echo "fileName=${fileName}";
+	# echo "fileName=${fileName}";
 	if [ ! -d $fileName ]; then
 		mkdir -p $fileName; #-p表示多重目录
 	else
@@ -74,10 +76,17 @@ function searchAllClassFromProject()
 	fileArray=($(find $filePath -name "*.${fileExtension}"));
 	echo ${fileArray[0]}; #取出数组第一个元素
 
+	if [ ! -d $fileName ]; then
+		mkdir -p $fileName; #-p表示多重目录
+	else
+		echo "dir already exsit";
+	fi
+	
 #遍历所有工程配置文件，把每个工程的类提取出来单独保存成一个文件
 for tempName in ${fileArray[*]}; do
-	#echo "tempName=${tempName}";
+	echo "tempName=${tempName} start...";
 	#tempName=${fileArray[4]};
+
 	projectName=$(serahProjectName ${tempName}); #获取当前工程名字
 	# echo "projectName=${projectName}";
 
@@ -86,6 +95,6 @@ for tempName in ${fileArray[*]}; do
 
 	resultFile=$(searchAllClassFromProject ${tempName} ${fullName}); #把每个工程所用到的类输出成一个文件
 	# echo "resultFile=${resultFile}";
-
+	echo "tempName=${tempName} done.";
 done
 
