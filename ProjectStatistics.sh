@@ -59,6 +59,31 @@ for tempName in ${fileArray[*]}; do
 		 rm "${fullName}/projectSize.txt";
  	fi 
 
+ 	if [ ! -f "${finalFileName}" ]; then 
+		 continue; # 不存在则跳过
+ 	fi 
+
+ 	#进行一些过滤，白名单
+ 	whiteNameArray=("monitor_pbxproj" "GTMXcodePlugin.xcodeproj" "Calculator.xcodeproj" "Testable.xcodeproj" \
+ 		"Swift.xcodeproj" "KIF.xcodeproj" "GTM.xcodeproj" "GTMiPhone.xcodeproj" "AppleScript.xcodeproj" \
+ 		"DeveloperSpotlightImporters.xcodeproj" "InterfaceBuilder.xcodeproj" "TestData/test.xcodeproj" \
+ 		"XcodeProject.xcodeproj" "GTMXcode4Plugin.xcodeproj" "GTMXcodePlugin.xcodeproj");
+ 	flag="NO"
+ 	for whiteName in ${whiteNameArray[@]}; do
+ 		
+ 		checkResult=$(echo $tempName | grep "${whiteName}");
+ 		if [[ "$checkResult" != "" ]]; then
+ 			#目录包含该文件名，则跳过
+ 			flag="YES";
+ 			break;
+ 		fi
+ 	done
+ 	
+ 	if [[ "$flag" == "YES" ]]; then
+ 		continue;
+ 	fi
+
+
 	# 一行行的读取进行处理
 	cat $finalFileName | while read line
 	do

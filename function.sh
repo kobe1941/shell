@@ -51,7 +51,7 @@ function searchAllClassFromProject()
 	awk '{print $3}' tempClassList.txt > realClassList.txt; #提取所有的类和其他文件，此时包含storyboard和xib
 
 	#grep ".m" realClassList.txt > hufengReal.txt; #提取出所有的.m文件，差不多是相当于所有的类
-	grep "\.m" realClassList.txt | grep -v "Tests.m$" | grep -v "Tests.mm$" | grep -v "Test.m$" | grep -v "Test.mm" | grep -v "+" > classListUsed.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
+	grep "\.m" realClassList.txt | grep -v "Tests.m$" | grep -v "Tests.mm$" | grep -v "Test.m$" | grep -v "Test.mm" > classListUsed.txt; #这是双grep实现逻辑与的操作，提取出所有的类，注意文件的位置
 
 	fileName=$2;
 	# echo "fileName=${fileName}";
@@ -76,12 +76,11 @@ function searchAllClassFromProject()
 	fileArray=($(find $filePath -name "*.${fileExtension}"));
 	echo ${fileArray[0]}; #取出数组第一个元素
 
-	if [ ! -d $fileName ]; then
-		mkdir -p $fileName; #-p表示多重目录
-	else
-		echo "dir already exsit";
+	if [ -d "project" ]; then
+		# mkdir -p $fileName; #-p表示多重目录
+		rm -r "project";
 	fi
-	
+
 #遍历所有工程配置文件，把每个工程的类提取出来单独保存成一个文件
 for tempName in ${fileArray[*]}; do
 	echo "tempName=${tempName} start...";
