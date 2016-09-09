@@ -1,3 +1,7 @@
+##################
+# 使用方法：传入一个类似linkmap.txt的文件，脚本会把每个类及其占用的size提取出来保存成文件，供统计使用
+# 该脚本运行过后才能运行ProjectStatistic.sh脚本	
+######################
 export LC_CTYPE=C 
 export LANG=C
 

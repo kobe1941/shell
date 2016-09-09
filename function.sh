@@ -1,21 +1,7 @@
-function sum()
-{
-	echo $1,$2;
-	#tempNumber=$[ $1 + $2 ];
-	return 0;
-	#return $(($1+$2));
-}
-
-#sum "hufeng.txt" "fgewgew";
-#echo $?;
-
-#在函数里打印什么，返回值就是什么
-#value=$(sum "regergrgerg.txt" "ghrth");
-
-#echo "value=$value";
-
-
-	
+#######################
+# 使用方法：传入一个目录，该脚本会遍历该目录下所有的工程配置文件，把每个工程所引用的类提取出来保存为文件
+# 该脚本运行过后才能运行ProjectStatistic.sh脚本	
+#######################
 
 #切割字符串，获取工程名HFBuild
 #a="/Users/hufeng/Documents/HFBackupCode/HFBuild/HFBuild.xcodeproj/project.pbxproj"
@@ -79,40 +65,27 @@ function searchAllClassFromProject()
 
 
 }
-
+	
 
 	filePath=$1; #文件目录
 	fileExtension="pbxproj";
 
-	#找出指定目录下的所有指定格式的文件
-	#find $filePath -name "*.${fileExtension}" > fileAllList.txt;
-
-	#把搜索结果传递给数组
+	#找出指定目录下的所有指定格式的文件，把搜索结果传递给数组
 	fileArray=($(find $filePath -name "*.${fileExtension}"));
 	echo ${fileArray[0]}; #取出数组第一个元素
 
+#遍历所有工程配置文件，把每个工程的类提取出来单独保存成一个文件
 for tempName in ${fileArray[*]}; do
 	#echo "tempName=${tempName}";
 	#tempName=${fileArray[4]};
-	projectName=$(serahProjectName ${tempName});
-	echo "projectName=${projectName}";
+	projectName=$(serahProjectName ${tempName}); #获取当前工程名字
+	# echo "projectName=${projectName}";
 
 	fullName="project/${projectName}";
 	#echo "fullName=${fullName}";
 
-	resultFile=$(searchAllClassFromProject ${tempName} ${fullName});
-	echo "resultFile=${resultFile}";
+	resultFile=$(searchAllClassFromProject ${tempName} ${fullName}); #把每个工程所用到的类输出成一个文件
+	# echo "resultFile=${resultFile}";
 
 done
-
-
-#projectName=$(serahProjectName ${fileArray[0]});
-#echo "projectName=${projectName}";
-
-#resultFile=$(searchAllClassFromProject ${fileArray[0]} $projectName);
-#echo "resultFile=${resultFile}";
-
-
-
-
 
