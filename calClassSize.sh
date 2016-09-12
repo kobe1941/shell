@@ -29,6 +29,7 @@ grep -v "\.o\|\.d" tempClassList.txt | grep "framework" >> ObjectCleanFile.txt;
 sed "s/\/.*\///g" ObjectCleanFile.txt > ObjectClassList.txt; #用于把两个斜杠之间的字符删除，连同斜杠本身一起删除
 #gsed "s/\/.\+\///g" ObjectCleanFile.txt > ObjectClassList.txt; #gsed是GUN版本的sed，各个版本的工具有些不一样
 
+
 #分别去掉两个中括号
 sed -e "s/\[//g" -e "s/\]//g" ObjectClassList.txt > ObjectClassListTest.txt; #-ｅ命令可以一个线程执行多个操作
 sort -n  -k1   ObjectClassListTest.txt > ObjectClassListTemp.txt;  #按照第一列排序
@@ -66,3 +67,61 @@ awk '{sum[$3]+=$2} END{
 ############合并两个文件方便比较############
 awk 'NR==FNR{a[i]=$0;i++}NR>FNR{printf "%-85s %-15s\n",a[j],$0;j++}' ObjectClassListTemp.txt classResultSize.txt > finalClassSizeList.txt; 
 #######################################
+
+################计算每个静态库和动态库所占的size###################
+#把静态库和动态库的数据抽出来，用来计算静态库和动态库的大小
+############第一种放方法#############
+#计算静态库
+grep "\.a" finalClassSizeList.txt > libFinalMethod2.txt;
+
+sed "s/(/ (/g" libFinalMethod2.txt > libFinalMethod3.txt; #在左括号前插入空格，方便统计
+
+awk '{sum[$2]+=$5} END{
+	for (i in sum){
+		print i, " ", sum[i]/1024 " kb";
+	}
+}' libFinalMethod3.txt > libFinalSizeList.txt;
+
+sort -n -r -k2 libFinalSizeList.txt > libFinalSizeListSort.txt;
+
+
+#计算动态库
+
+
+##################################
+
+###########第二种方法###########
+grep "\.a\|\.framework" tempClassList.txt > libFramework.txt;
+
+sed "s/\/.*\///g" libFramework.txt > libFrameworkNOSlash.txt; #用于把两个斜杠之间的字符删除，连同斜杠本身一起删除
+
+#先统计静态库
+grep "\.a" libFrameworkNOSlash.txt > libPure.txt; #纯粹的静态库文件
+
+sed -e "s/\[//g" -e "s/\]//g" libPure.txt > libNoBrackets.txt; #去掉左右两个中括号
+
+sed "s/(/ (/g" libNoBrackets.txt > libFinal.txt; #在左括号前插入空格，方便统计
+
+# awk 'BEGIN{
+# 	classNum=$1;
+# 	print "classNum =" classNum;
+# 	 # sed -n '1p' classResultSize.txt | awk '{print $2}' >> hftestnum.txt;
+# 	 sed -n '1p' classResultSize.txt} END{
+
+
+# }' libFinal.txt;
+
+# cat libFinal.txt | while read line
+# do
+# 	# echo $line;
+# 	 awk '{print #1}' line;
+# done
+
+#接着统计framework
+grep -v "\.a\|.dylib" libFrameworkNOSlash.txt > frameworkPure.txt; #纯粹的动态库
+
+sed -e "s/\[//g" -e "s/\]//g" frameworkPure.txt > frameworkNoBrackets.txt; #去掉左右两个中括号
+
+sed "s/(/ (/g" frameworkNoBrackets.txt > frameworkFinal.txt; #在左括号前插入空格，方便统计
+
+##################################

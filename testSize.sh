@@ -6,6 +6,13 @@ filePath=$1;
 
 echo $filePath;
 
+cat libFinal.txt | awk '{
+	len=$1;
+	# print "len ="len;
+	{sed -n "1p" "$[filePath]"}
+}'
+
+
 awk '{sum+=$3} END{ 
 	
 	print "sum = " sum "kb";
