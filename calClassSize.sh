@@ -86,42 +86,37 @@ sort -n -r -k2 libFinalSizeList.txt > libFinalSizeListSort.txt;
 
 
 #计算动态库
+grep -v "\.a" finalClassSizeList.txt > frameworkFinalMehod2.txt;
 
+sed "s/(/ (/g" frameworkFinalMehod2.txt > frameworkFinalMehod3.txt; #在左括号前插入空格，方便统计
+
+awk '{sum[$2]+=$5} END{
+	for (i in sum){
+		print i, " ", sum[i]/1024 " kb";
+	}
+}' frameworkFinalMehod3.txt > frameworkFinalSizeList.txt;
+
+sort -n -r -k2 frameworkFinalSizeList.txt > frameworkFinalSizeListSort.txt;
 
 ##################################
 
-###########第二种方法###########
-grep "\.a\|\.framework" tempClassList.txt > libFramework.txt;
+###########第二种方法计算未果###########
+# grep "\.a\|\.framework" tempClassList.txt > libFramework.txt;
 
-sed "s/\/.*\///g" libFramework.txt > libFrameworkNOSlash.txt; #用于把两个斜杠之间的字符删除，连同斜杠本身一起删除
+# sed "s/\/.*\///g" libFramework.txt > libFrameworkNOSlash.txt; #用于把两个斜杠之间的字符删除，连同斜杠本身一起删除
 
-#先统计静态库
-grep "\.a" libFrameworkNOSlash.txt > libPure.txt; #纯粹的静态库文件
+# #先统计静态库
+# grep "\.a" libFrameworkNOSlash.txt > libPure.txt; #纯粹的静态库文件
 
-sed -e "s/\[//g" -e "s/\]//g" libPure.txt > libNoBrackets.txt; #去掉左右两个中括号
+# sed -e "s/\[//g" -e "s/\]//g" libPure.txt > libNoBrackets.txt; #去掉左右两个中括号
 
-sed "s/(/ (/g" libNoBrackets.txt > libFinal.txt; #在左括号前插入空格，方便统计
-
-# awk 'BEGIN{
-# 	classNum=$1;
-# 	print "classNum =" classNum;
-# 	 # sed -n '1p' classResultSize.txt | awk '{print $2}' >> hftestnum.txt;
-# 	 sed -n '1p' classResultSize.txt} END{
+# sed "s/(/ (/g" libNoBrackets.txt > libFinal.txt; #在左括号前插入空格，方便统计
 
 
-# }' libFinal.txt;
+# #接着统计framework
+# grep -v "\.a\|.dylib" libFrameworkNOSlash.txt > frameworkPure.txt; #纯粹的动态库
 
-# cat libFinal.txt | while read line
-# do
-# 	# echo $line;
-# 	 awk '{print #1}' line;
-# done
+# sed -e "s/\[//g" -e "s/\]//g" frameworkPure.txt > frameworkNoBrackets.txt; #去掉左右两个中括号
 
-#接着统计framework
-grep -v "\.a\|.dylib" libFrameworkNOSlash.txt > frameworkPure.txt; #纯粹的动态库
-
-sed -e "s/\[//g" -e "s/\]//g" frameworkPure.txt > frameworkNoBrackets.txt; #去掉左右两个中括号
-
-sed "s/(/ (/g" frameworkNoBrackets.txt > frameworkFinal.txt; #在左括号前插入空格，方便统计
-
+# sed "s/(/ (/g" frameworkNoBrackets.txt > frameworkFinal.txt; #在左括号前插入空格，方便统计
 ##################################
