@@ -97,7 +97,7 @@ for tempName in ${fileArray[*]}; do
 
 	#排序输出然后保存到文件里
 	awk -v VAR=$projectName '{sum+=$3} END{ 
-		print VAR" = "sum/1024" kb";
+		print VAR" "sum/1024" kb";
 
 	}' "${fullName}/projectSize.txt" >> finalProjectSizeList.txt;
 
@@ -106,7 +106,7 @@ done
 
 sed '/Demo/d' finalProjectSizeList.txt > finalProjectSizeListDeleteDemo.txt
 
-sort -n -r -k3	finalProjectSizeListDeleteDemo.txt > finalProjectSizeListSort.txt;
+sort -n -r -k2	finalProjectSizeListDeleteDemo.txt > finalProjectSizeListSort.txt;
 
 
 
