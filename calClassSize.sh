@@ -44,7 +44,7 @@ sed -n '/\[.*\]/p' SymbolsTest.txt > Symbols.txt;
 echo "Symbols get done.";
 
 
-gsed -i '1,2d' Symbols.txt; #去掉前两行，此处由于兼容问题，要使用gsed，如果未安装，执行brew install gnu-sed安装即可
+sed -i '1,2d' Symbols.txt; #去掉前两行，此处由于兼容问题，要使用gsed，如果未安装，执行brew install gnu-sed安装即可
 
 #跟上方使用-e是一样的效果，只不过是两个线程，速度慢一些，另替换操作斜杠/也可以用#代替
 sed "s#\[##g" Symbols.txt | sed "s#\]##g" > SymbolsTemp.txt;

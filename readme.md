@@ -16,7 +16,7 @@
 使用方法：传入一个文件目录（工程所在目录），会把每个工程所使用的类所占用的size全部输出
 该脚本依赖function.sh脚本和calClassSize.sh脚本，前两个脚本执行完毕后才最后执行，否则会找不到文件。
 
-具体里的结果在两个文件里，比如静态库的size占用在libFinalSizeListSort.txt里，如果有使用动态库，则frameworkFinalSizeListSort.txt文件会统计各个动态库所占size大小的TXT文件。看名字就知道已经按照size从大到小排好序了。
+具体里的结果在两个文件里，比如pod有源码的库的size占用在libFinalSizeListSort.txt里，如果第三方的库是以framework形式提供的，则frameworkFinalSizeListSort.txt文件会统计其所占size大小的TXT文件。finalProjectSizeListSort.txt则统计各个工程的大小，看名字就知道已经按照size从大到小排好序了。
 
 执行结果见下图：
 
